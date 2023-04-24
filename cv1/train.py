@@ -175,7 +175,7 @@ def count_parameters(model):
 
 
 if __name__ == '__main__':
-    DATA_PATH = Path('C:\\Users\\ploko\\Downloads\\vk-made-sports-image-classification')
+    DATA_PATH = Path('./vk-made-sports-image-classification')
 
     train_df = pd.read_csv(DATA_PATH / 'train_fix270.csv')
     test_df = pd.read_csv(DATA_PATH / 'test.csv')
