@@ -190,7 +190,7 @@ if __name__ == '__main__':
     # print(f"remaining train samples: {train_df.shape[0]}")
 
     NUM_CLASSES = len(label2number)
-    SAVE_PATH = Path("C:\\Users\\ploko\\Downloads\\models")
+    SAVE_PATH = Path("./models")
     SAVE_PATH.mkdir(parents=True, exist_ok=True)
 
     SQUARE_SIZE = 360  # 224 320 360 480
@@ -330,11 +330,6 @@ if __name__ == '__main__':
             nn.Dropout(p=0.3, inplace=True),
             nn.Linear(model.classifier[1].in_features, NUM_CLASSES, bias=True)
         )
-
-    # CONTINUE TRAINING
-    # with open("../input/densenet161/densenet161_30ep_best.pth", "rb") as fp:
-    #    best_state_dict = torch.load(fp, map_location="cpu")
-    #    model.load_state_dict(best_state_dict)
 
     model.to(device)
     print(f"{count_parameters(model)} trainable params")
