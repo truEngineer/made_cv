@@ -12,7 +12,6 @@ from torch.utils.data import DataLoader, Dataset
 from torch.cuda.amp import autocast, GradScaler
 import torchvision.models as models
 from torchvision import transforms
-# import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score
 
 np.random.seed(0)
@@ -361,8 +360,6 @@ if __name__ == '__main__':
                                               max_lr=LEARNING_RATE, final_div_factor=1e3)
     # optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE, amsgrad=True, weight_decay=0.00001)
     # scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=len(train_loader), T_mult=2)
-
-    # print("Ready for training...")
 
     best_val_loss = np.inf
 
