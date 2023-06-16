@@ -98,3 +98,24 @@ def collate_fn_recognition(batch: list[dict]) -> dict:
     batch = {'image': images, 'seq': seqs, 'seq_len': seq_lens,
              'text': texts, 'file_name': file_names}
     return batch
+
+
+def collate_fn_rotate(batch: list[dict]) -> dict:
+    # RecognitionDataset(rotate=True)
+    # output = dict(image=[image, image_90, image_180, image_270],
+    #               seq=seq : list, seq_len=len(seq) : int, text=text : str, filename=filename : str)
+    images, seqs, seq_lens, texts, file_names = [], [], [], [], []
+    for sample in batch:
+        images.extend(sample['image'])  # sample['image'] = [image_0, image_90, image_180, image_270]
+        seqs.extend(sample['seq'] * len(sample['image']))  # [1,2] * 4 = [1,2,1,2,1,2,1,2], shape sum(target_lengths)
+        seq_lens.extend([sample['seq_len']] * len(sample['image']))  # [3] * 4 = [3,3,3,3]
+        texts.extend([sample['text']] * len(sample['image']))  # ['abc'] * 4 = ['abc','abc','abc','abc']
+        file_names.extend([sample['filename']] * len(sample['image']))  # ['1.jpg'] * 4 = ['1.jpg','1.jpg','1.jpg','1.jpg']
+    # print(len(images), len(seqs), len(seq_lens), len(texts), len(file_names))
+    # 256 1704 256 256 256, 256 1772 256 256 256, 256 1848 256 256 256 ...
+    images = torch.stack(images)  # torch.Size([256, 3, 64, 320])
+    seqs = torch.Tensor(seqs).int()
+    seq_lens = torch.Tensor(seq_lens).int()
+    batch = {'image': images, 'seq': seqs, 'seq_len': seq_lens,
+             'text': texts, 'file_name': file_names}
+    return batch
