@@ -64,3 +64,37 @@ class RecognitionDataset(Dataset):
 
     def __len__(self):
         return len(self.filenames)
+
+
+class Cv2Resize:
+    def __init__(self, output_size=(320, 64)):
+        self.output_size = output_size
+
+    def __call__(self, img):
+        h, w = img.shape[:2]
+        if w > self.output_size[0]:
+            img = cv2.resize(img, self.output_size, interpolation=cv2.INTER_AREA)
+        else:
+            img = cv2.resize(img, self.output_size, interpolation=cv2.INTER_CUBIC)
+        return img.astype(np.uint8)
+
+
+def collate_fn_recognition(batch: list[dict]) -> dict:
+    """Function for torch.utils.data.Dataloader for batch collecting.
+    Accepts list of dataset __get_item__ return values (dicts).
+    Returns dict with same keys but values are either torch.Tensors of batched
+    images, sequences, and so.
+    """
+    images, seqs, seq_lens, texts, file_names = [], [], [], [], []
+    for sample in batch:
+        images.append(sample['image'])
+        seqs.extend(sample['seq'])
+        seq_lens.append(sample['seq_len'])
+        texts.append(sample['text'])
+        file_names.append(sample['filename'])
+    images = torch.stack(images)
+    seqs = torch.Tensor(seqs).int()
+    seq_lens = torch.Tensor(seq_lens).int()
+    batch = {'image': images, 'seq': seqs, 'seq_len': seq_lens,
+             'text': texts, 'file_name': file_names}
+    return batch
