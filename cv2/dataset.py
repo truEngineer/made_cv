@@ -80,11 +80,6 @@ class Cv2Resize:
 
 
 def collate_fn_recognition(batch: list[dict]) -> dict:
-    """Function for torch.utils.data.Dataloader for batch collecting.
-    Accepts list of dataset __get_item__ return values (dicts).
-    Returns dict with same keys but values are either torch.Tensors of batched
-    images, sequences, and so.
-    """
     images, seqs, seq_lens, texts, file_names = [], [], [], [], []
     for sample in batch:
         images.append(sample['image'])
