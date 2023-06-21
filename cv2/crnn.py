@@ -10,11 +10,14 @@ class FeatureExtractor(nn.Module):
         super().__init__()
         h, w = input_size
 
-        # resnet = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)  # online
+        # online
+        # resnet = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
+        efficientnet = models.efficientnet_v2_s(weights=models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
+        
         # offline
-        efficientnet = models.efficientnet_v2_s()  # offline
-        state_dict = torch.load('weights/path/efficientnet_v2_s-dd5fe13b.pth')
-        efficientnet.load_state_dict(state_dict)
+        # efficientnet = models.efficientnet_v2_s()
+        # state_dict = torch.load('weights/path/efficientnet_v2_s-dd5fe13b.pth')
+        # efficientnet.load_state_dict(state_dict)
 
         self.cnn = nn.Sequential(*list(efficientnet.children())[:-2])
         self.pool = nn.AvgPool2d(kernel_size=(h // 32, 1))
@@ -22,7 +25,7 @@ class FeatureExtractor(nn.Module):
         # in_channels, out_channels, kernel_size, stride=1,
 
         # self.num_output_features = self.cnn[-1][-1].bn2.num_features  # resnet18 512
-        self.num_output_features = self.cnn[-1][-1][1].num_features  # efficientnet_v2_s 1280
+        self.num_output_features = self.cnn[-1][-1][1].num_features     # efficientnet_v2_s 1280
 
     def apply_projection(self, x):
         """Use convolution to increase width of a features.
