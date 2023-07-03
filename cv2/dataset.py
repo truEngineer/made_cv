@@ -17,6 +17,7 @@ class RecognitionDataset(Dataset):
         self.split = split
         self.train_size = train_size
         self.rotate_4 = rotate_4  # bruteforce image orientation
+        self.img_angles = None  # rotate image if orientation info is available
 
         if split in ['train', 'val']:
             img_filenames = data_df['img'].values
@@ -25,20 +26,14 @@ class RecognitionDataset(Dataset):
             self.filenames = img_filenames[first:last]
             img_labels = data_df['text'].values
             self.labels = img_labels[first:last]
-
-            self.img_angles = None  # rotate image if orientation info is available
             if 'angle' in data_df.columns:
                 img_angles = data_df['angle'].values
                 self.img_angles = img_angles[first:last]
-
             return
         if split == 'test':
             self.filenames = data_df['img'].values
-
-            self.img_angles = None  # rotate image if orientation info is available
             if 'angle' in data_df.columns:
                 self.img_angles = data_df['angle'].values
-
             return
         raise NotImplementedError(f'Unknown split: {split}')
 
@@ -48,31 +43,16 @@ class RecognitionDataset(Dataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         if self.split == 'test':
 
-            # rotate image if orientation info is available
             if self.img_angles is not None:
-                angle = self.img_angles[idx]
-                if angle == 90:
-                    image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
-                elif angle == 180:
-                    image = cv2.rotate(image, cv2.ROTATE_180)
-                elif angle == 270:
-                    image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                image = self._rotate_image(image, self.img_angles[idx])
 
-            # output = dict(image=image, filename=filename)
             output = dict(image=image, seq=[], seq_len=0, text='', filename=filename)
         else:  # 'train', 'val'
             text = self.labels[idx]
             seq = self._text_to_seq(text)
 
-            # rotate image if orientation info is available
             if self.img_angles is not None:
-                angle = self.img_angles[idx]
-                if angle == 90:
-                    image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
-                elif angle == 180:
-                    image = cv2.rotate(image, cv2.ROTATE_180)
-                elif angle == 270:
-                    image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                image = self._rotate_image(image, self.img_angles[idx])
 
             output = dict(image=image, seq=seq, seq_len=len(seq), text=text, filename=filename)
         if self.rotate_4:  # bruteforce all possible text orientations
@@ -96,6 +76,17 @@ class RecognitionDataset(Dataset):
         # seq = [self.alphabet.find(c) + 1 for c in text]  # 0 -> blank
         seq = [self.alphabet_dict[c] for c in text]  # 0 -> blank
         return seq
+
+    def _rotate_image(self, image, angle):
+        # rotate image if orientation info is available
+        angle = self.img_angles[idx]
+        if angle == 90:
+            image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+        elif angle == 180:
+            image = cv2.rotate(image, cv2.ROTATE_180)
+        elif angle == 270:
+            image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        return image
 
     def __len__(self):
         return len(self.filenames)
