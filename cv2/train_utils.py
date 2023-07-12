@@ -45,3 +45,7 @@ def decode(preds: torch.Tensor, alphabet: str) -> (list[str], list[float]):
         outputs.append(out_str)
         log_probs.append(out_log_prob)
     return outputs, log_probs
+
+
+def count_parameters(model: nn.Module) -> int:
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
