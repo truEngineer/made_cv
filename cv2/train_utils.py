@@ -109,3 +109,40 @@ def model_train_val_epoch(model: nn.Module, data_loader: DataLoader,
         print(f'{fname}, gt: "{gt}", pred: "{pred}", dist: {d}')
 
     return epoch_losses, levenshtein_losses
+
+
+def train_model(model: nn.Module, experiment_name: str, num_epochs: int,
+                device: torch.device, optimizer: optim.Optimizer, lr_scheduler: optim.lr_scheduler,
+                train_dataloader: DataLoader, val_dataloader: DataLoader) -> tuple[list[tuple], list[tuple]]:
+    best_loss = np.inf
+    prev_lr = optimizer.param_groups[0]['lr']
+    train_history, val_history = [], []
+
+    for i in range(num_epochs):
+        # Load best model if LR has been changed
+        if optimizer.param_groups[0]['lr'] < prev_lr:
+            prev_lr = optimizer.param_groups[0]['lr']
+            with open(f'{experiment_name}.pth', 'rb') as fp:
+                state_dict = torch.load(fp, map_location='cpu')
+            model.load_state_dict(state_dict)
+            model.to(device)
+        # TRAINING
+        epoch_losses, levenshtein_losses = model_train_val_epoch(model, train_dataloader, device, optimizer)
+        print(f'epoch {i + 1}, ctc: {np.mean(epoch_losses):.3f}, levenshtein: {np.mean(levenshtein_losses):.3f}')
+        train_history.append((np.mean(epoch_losses), np.mean(levenshtein_losses)))
+        time.sleep(0.5)
+        # VALIDATION
+        epoch_losses, levenshtein_losses = model_train_val_epoch(model, val_dataloader, device)
+
+        if best_loss > np.mean(epoch_losses):
+            best_loss = np.mean(epoch_losses)
+            with open(f'{experiment_name}.pth', 'wb') as fp:
+                torch.save(model.state_dict(), fp)
+
+        lr_scheduler.step(np.mean(levenshtein_losses))
+        print(f'epoch {i + 1}, ctc: {np.mean(epoch_losses):.3f}, levenshtein: {np.mean(levenshtein_losses):.3f}')
+        print(f'best val loss: {best_loss:.3f}\n')
+        val_history.append((np.mean(epoch_losses), np.mean(levenshtein_losses)))
+        time.sleep(0.5)
+
+    return train_history, val_history
