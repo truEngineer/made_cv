@@ -146,3 +146,19 @@ def train_model(model: nn.Module, experiment_name: str, num_epochs: int,
         time.sleep(0.5)
 
     return train_history, val_history
+
+
+def test_model(model: nn.Module, experiment_name: str, device: torch.device, test_dataloader: DataLoader) -> list[str]:
+    with open(f'{experiment_name}.pth', 'rb') as fp:
+        state_dict = torch.load(fp, map_location='cpu')
+    model.load_state_dict(state_dict)
+    model.to(device)
+    model.eval()
+    test_preds = []
+    for b in tqdm(test_dataloader, total=len(test_dataloader), desc='test'):
+        images = b['image'].to(device)
+        with torch.no_grad():
+            seqs_pred = model(images).cpu()
+        texts_pred, _ = decode(seqs_pred, model.alphabet)
+        test_preds.extend(texts_pred)
+    return test_preds
