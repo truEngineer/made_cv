@@ -162,3 +162,40 @@ def test_model(model: nn.Module, experiment_name: str, device: torch.device, tes
         texts_pred, _ = decode(seqs_pred, model.alphabet)
         test_preds.extend(texts_pred)
     return test_preds
+
+
+def train_check_batch1_model(model: nn.Module, experiment_name: str, device: torch.device,
+                             dataloader: DataLoader) -> pd.DataFrame:
+    if not dataloader.batch_size == 1:  # collate_fn not needed!
+        raise AssertionError('dataloader batch_size = 1 is required')
+    with open(f'{experiment_name}.pth', 'rb') as fp:
+        state_dict = torch.load(fp, map_location='cpu')
+    model.load_state_dict(state_dict)
+    model.to(device)
+    model.eval()
+    img_filenames, img_texts, img_angle_preds_distances = [], [], []
+    img_angles = ['img_0', 'img_90', 'img_180', 'img_270']
+    for b in tqdm(dataloader, total=len(dataloader), desc='train check'):
+        # print(len(b['image']), b['image'][0].shape, b['image'][1].shape, b['filename'], b['text'])
+        # 4 torch.Size([1, 3, 64, 320]) torch.Size([1, 3, 64, 320]) ['1.jpg'] ['Атырау']
+        img_filenames.append(b['filename'])
+        img_texts.append(b['text'])
+        images = torch.stack([img_t.squeeze(0) for img_t in b['image']]).to(device)  # bs = 1
+        # b['image'] = [image_0, image_90, image_180, image_270]
+        with torch.no_grad():
+            seqs_pred = model(images).cpu()
+
+        texts_pred, _ = decode(seqs_pred, model.alphabet)  # texts_gt: list[str]
+        texts_gt = [b['text']] * len(b['image'])  # ['label'] * 4 = ['label', 'label', 'label', 'label']
+        # len(b['image']) == len(img_angles)
+        img_angle_preds_distances.append(
+            {angle: (pred, distance(pred, gt)) for angle, pred, gt in zip(img_angles, texts_pred, texts_gt)}
+        )  # list[dict[tuple]]
+    rotation_df = pd.DataFrame()
+    rotation_df['img'] = img_filenames
+    rotation_df['text'] = img_texts
+    for angle in img_angles:
+        rotation_df[f'{angle}_pred'] = [img[angle][0] for img in img_angle_preds_distances]
+        rotation_df[f'{angle}_dist'] = [img[angle][1] for img in img_angle_preds_distances]
+
+    return rotation_df
