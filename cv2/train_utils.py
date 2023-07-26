@@ -199,3 +199,49 @@ def train_check_batch1_model(model: nn.Module, experiment_name: str, device: tor
         rotation_df[f'{angle}_dist'] = [img[angle][1] for img in img_angle_preds_distances]
 
     return rotation_df
+
+
+def bruteforce_rotation_model(model: nn.Module, experiment_name: str, device: torch.device,
+                              dataloader: DataLoader, labeled_data: bool = False) -> pd.DataFrame:
+    with open(f'{experiment_name}.pth', 'rb') as fp:
+        state_dict = torch.load(fp, map_location='cpu')
+    model.load_state_dict(state_dict)
+    model.to(device)
+    model.eval()
+    img_filenames, img_angles, img_preds, img_log_probs = [], [], [], []
+    img_texts, img_dists = [], []  # labeled_data=True
+    angles = [0, 90, 180, 270]
+    # dataset.RecognitionDataset(rotate=True)
+    for b in tqdm(dataloader, total=len(dataloader), desc='train rotation check'):
+        # print(len(b['image']), b['image'][0].shape, b['image'][1].shape, len(b['file_name']), len(b['text']))
+        # 256 torch.Size([3, 64, 320]) torch.Size([3, 64, 320]) 256 256
+        img_filenames.extend(b['file_name'])
+        # dataloader image bs = 64, collate fn image bs = 64 * 4
+        img_angles.extend(angles * (len(b['image']) // 4))  # current batch size = len(b['image']) // len(angles)
+        images = b['image'].to(device)
+        # b['image'] = [img_0_0, img_0_90, img_0_180, img_0_270, img_1_0, img_1_90, img_1_180, img_1_270, img_2_0, ...]
+        with torch.no_grad():
+            seqs_pred = model(images).cpu()
+
+        # torch.Size([30, 256, 234])
+        # log_probs = F.log_softmax(seqs_pred, dim=2)
+        # torch.Size([30, 256, 234])
+        texts_pred, log_probs = decode(seqs_pred, model.alphabet)
+        img_preds.extend(texts_pred)
+        img_log_probs.extend(log_probs)
+        if labeled_data:
+            img_texts.extend(b['text'])
+            img_dists.extend(
+                [distance(pred, gt) for pred, gt in zip(texts_pred, b['text'])]  # b['text'] = texts_gt: list[str]
+            )
+
+    rotation_df = pd.DataFrame()
+    rotation_df['img'] = img_filenames
+    rotation_df['angle'] = img_angles
+    rotation_df['pred'] = img_preds
+    if labeled_data:
+        rotation_df['text'] = img_texts
+        rotation_df['dist'] = img_dists
+    rotation_df['logit'] = img_log_probs
+
+    return rotation_df
