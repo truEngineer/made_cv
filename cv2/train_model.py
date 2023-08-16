@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 import numpy as np
 import pandas as pd
@@ -23,6 +25,10 @@ torch.manual_seed(0)
 
 
 if __name__ == '__main__':
+    data_path = Path('./ocr_contest_data')
+    labeled_data_path = Path(data_path / 'train')
+    test_data_path = Path(data_path / 'test')
+
     labels_df = pd.read_csv(data_path / 'extended_train_labels_st5_ft3.csv')
     # labels_df = pd.read_csv('labeled_data_rotation_max.csv')  # df with image angles info
 
