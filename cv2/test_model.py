@@ -1,9 +1,7 @@
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-
 import torch
+import pandas as pd
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
@@ -19,7 +17,6 @@ IMG_HEIGHT = 64
 BATCH_SIZE = 128
 NUM_WORKERS = 4
 
-np.random.seed(0)
 torch.manual_seed(0)
 
 
