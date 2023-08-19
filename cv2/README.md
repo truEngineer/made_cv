@@ -24,6 +24,10 @@ dataset/
 |   |-- ...
 ```
 
+### Exploratory Data Analysis
+
+View [results](https://github.com/truEngineer/made_cv/tree/main/cv2/eda).
+
 ## Evaluation Process
 
 The target metric is LevenshteinMean.
