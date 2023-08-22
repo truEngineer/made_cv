@@ -68,8 +68,16 @@ if __name__ == '__main__':
                 rnn_hidden_size=128, rnn_num_layers=2, rnn_dropout=0.3, rnn_bidirectional=True)
     crnn.to(device)
 
+    # labeled data
     rotation_df = bruteforce_rotation_model(crnn, EXPERIMENT_NAME, device, train_rotation_dataloader, labeled_data=True)
     rotation_df.to_csv('labeled_data_rotation.csv', header=True, index=False)
-    
     rotation_max_df = rotation_df.loc[rotation_df.groupby('img', sort=False).logit.idxmax()].reset_index(drop=True)
     rotation_max_df.to_csv('labeled_data_rotation_max.csv', header=True, index=False)
+
+    # test data
+    rotation_df = bruteforce_rotation_model(crnn, experiment_name, device, test_rotation_dataloader, labeled_data=False)
+    rotation_df.to_csv('test_data_rotation.csv', header=True, index=False)
+    rotation_max_df = rotation_df.loc[rotation_df.groupby('img', sort=False).logit.idxmax()].reset_index(drop=True)
+    rotation_max_df.to_csv('test_data_rotation_max.csv', header=True, index=False)
+    submission_df = pd.DataFrame({'Id': rotation_max_df['img'], 'Predicted': rotation_max_df['pred']})
+    submission_df.to_csv('submission.csv', header=True, index=False)
