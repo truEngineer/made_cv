@@ -24,3 +24,230 @@ first 30 symbols: [('о', 109470), ('а', 98383), ('е', 87551), ('и', 78191), 
 deleted symbols (thresh=3): 357
 drop 220 samples (thresh=3)
 labeled samples: 275410
+
+
+
+
+# crnn1, resnet18, 20 epochs, seed 0,  img_sz=320x64, cnn_output_len=30,
+crnn_resnet18, current device: cuda
+alphabet: 233 symbols
+crnn_resnet18: 12026484 parameters
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.82it/s]
+epoch 1, ctc: 4.682, levenshtein: 6.945
+val: 100%|██████████| 431/431 [00:09<00:00, 46.10it/s]
+275960.jpg, gt: "госсовета", pred: "по", dist: 8
+275961.jpg, gt: "спр", pred: "и", dist: 3
+275962.jpg, gt: "зарядка", pred: "по", dist: 7
+275963.jpg, gt: "7624", pred: "1", dist: 4
+275964.jpg, gt: "AJ", pred: "", dist: 2
+epoch 1, ctc: 3.877, levenshtein: 6.532
+best val loss: 3.877
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.93it/s]
+epoch 2, ctc: 3.553, levenshtein: 5.992
+val: 100%|██████████| 431/431 [00:09<00:00, 43.77it/s]
+275960.jpg, gt: "госсовета", pred: "сосовов", dist: 5
+275961.jpg, gt: "спр", pred: "сл", dist: 2
+275962.jpg, gt: "зарядка", pred: "вовт", dist: 7
+275963.jpg, gt: "7624", pred: "171", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 2, ctc: 3.198, levenshtein: 5.536
+best val loss: 3.198
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.99it/s]
+epoch 3, ctc: 2.937, levenshtein: 5.139
+val: 100%|██████████| 431/431 [00:09<00:00, 45.06it/s]
+275960.jpg, gt: "госсовета", pred: "постов", dist: 5
+275961.jpg, gt: "спр", pred: "сA", dist: 2
+275962.jpg, gt: "зарядка", pred: "задлна", dist: 4
+275963.jpg, gt: "7624", pred: "177", dist: 4
+275964.jpg, gt: "AJ", pred: "1", dist: 2
+epoch 3, ctc: 2.592, levenshtein: 4.618
+best val loss: 2.592
+
+train: 100%|██████████| 1721/1721 [01:19<00:00, 21.54it/s]
+epoch 4, ctc: 2.380, levenshtein: 4.295
+val: 100%|██████████| 431/431 [00:09<00:00, 46.63it/s]
+275960.jpg, gt: "госсовета", pred: "постова", dist: 4
+275961.jpg, gt: "спр", pred: "срт", dist: 2
+275962.jpg, gt: "зарядка", pred: "заздна", dist: 3
+275963.jpg, gt: "7624", pred: "1A", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 4, ctc: 2.142, levenshtein: 3.911
+best val loss: 2.142
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.95it/s]
+epoch 5, ctc: 1.969, levenshtein: 3.685
+val: 100%|██████████| 431/431 [00:09<00:00, 45.98it/s]
+275960.jpg, gt: "госсовета", pred: "посовта", dist: 3
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "заряда", dist: 1
+275963.jpg, gt: "7624", pred: "77", dist: 3
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 5, ctc: 1.841, levenshtein: 3.418
+best val loss: 1.841
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.85it/s]
+epoch 6, ctc: 1.694, levenshtein: 3.264
+val: 100%|██████████| 431/431 [00:09<00:00, 46.58it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарянка", dist: 1
+275963.jpg, gt: "7624", pred: "171", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 6, ctc: 1.684, levenshtein: 3.154
+best val loss: 1.684
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.96it/s]
+epoch 7, ctc: 1.496, levenshtein: 2.964
+val: 100%|██████████| 431/431 [00:09<00:00, 46.23it/s]
+275960.jpg, gt: "госсовета", pred: "госсовЕта", dist: 1
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "171", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 7, ctc: 1.557, levenshtein: 2.919
+best val loss: 1.557
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.92it/s]
+epoch 8, ctc: 1.346, levenshtein: 2.734
+val: 100%|██████████| 431/431 [00:09<00:00, 46.19it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарягка", dist: 1
+275963.jpg, gt: "7624", pred: "6474", dist: 3
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 8, ctc: 1.492, levenshtein: 2.785
+best val loss: 1.492
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 22.05it/s]
+epoch 9, ctc: 1.222, levenshtein: 2.543
+val: 100%|██████████| 431/431 [00:09<00:00, 44.20it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ch", dist: 3
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "9271", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 9, ctc: 1.449, levenshtein: 2.683
+best val loss: 1.449
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.88it/s]
+epoch 10, ctc: 1.121, levenshtein: 2.381
+val: 100%|██████████| 431/431 [00:09<00:00, 43.12it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ск", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "071", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 10, ctc: 1.422, levenshtein: 2.613
+best val loss: 1.422
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.86it/s]
+epoch 11, ctc: 1.032, levenshtein: 2.242
+val: 100%|██████████| 431/431 [00:09<00:00, 44.50it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ск", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "37", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 11, ctc: 1.417, levenshtein: 2.552
+best val loss: 1.417
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.81it/s]
+epoch 12, ctc: 0.957, levenshtein: 2.121
+val: 100%|██████████| 431/431 [00:09<00:00, 44.69it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ск", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "7471", dist: 3
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 12, ctc: 1.392, levenshtein: 2.483
+best val loss: 1.392
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.84it/s]
+epoch 13, ctc: 0.891, levenshtein: 2.015
+val: 100%|██████████| 431/431 [00:09<00:00, 46.20it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "14471", dist: 5
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 13, ctc: 1.393, levenshtein: 2.430
+best val loss: 1.392
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.95it/s]
+epoch 14, ctc: 0.836, levenshtein: 1.922
+val: 100%|██████████| 431/431 [00:09<00:00, 45.33it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ск", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "1471", dist: 4
+275964.jpg, gt: "AJ", pred: "1", dist: 2
+epoch 14, ctc: 1.401, levenshtein: 2.397
+best val loss: 1.392
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.88it/s]
+epoch 15, ctc: 0.781, levenshtein: 1.833
+val: 100%|██████████| 431/431 [00:09<00:00, 46.46it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "скл", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "9270", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 15, ctc: 1.405, levenshtein: 2.365
+best val loss: 1.392
+
+train: 100%|██████████| 1721/1721 [01:19<00:00, 21.62it/s]
+epoch 16, ctc: 0.737, levenshtein: 1.754
+val: 100%|██████████| 431/431 [00:09<00:00, 47.34it/s]
+275960.jpg, gt: "госсовета", pred: "гОССОВЕта", dist: 6
+275961.jpg, gt: "спр", pred: "сh", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "47", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 16, ctc: 1.388, levenshtein: 2.346
+best val loss: 1.388
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.94it/s]
+epoch 17, ctc: 0.696, levenshtein: 1.681
+val: 100%|██████████| 431/431 [00:09<00:00, 47.28it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "94271", dist: 4
+275964.jpg, gt: "AJ", pred: "20", dist: 2
+epoch 17, ctc: 1.397, levenshtein: 2.304
+best val loss: 1.388
+
+train: 100%|██████████| 1721/1721 [01:19<00:00, 21.76it/s]
+epoch 18, ctc: 0.663, levenshtein: 1.626
+val: 100%|██████████| 431/431 [00:09<00:00, 45.62it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "скк", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "271", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 18, ctc: 1.403, levenshtein: 2.277
+best val loss: 1.388
+
+train: 100%|██████████| 1721/1721 [01:19<00:00, 21.77it/s]
+epoch 19, ctc: 0.628, levenshtein: 1.564
+val: 100%|██████████| 431/431 [00:09<00:00, 46.55it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ск", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "1271", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 19, ctc: 1.415, levenshtein: 2.271
+best val loss: 1.388
+
+train: 100%|██████████| 1721/1721 [01:18<00:00, 21.91it/s]
+epoch 20, ctc: 0.596, levenshtein: 1.504
+val: 100%|██████████| 431/431 [00:09<00:00, 43.69it/s]
+275960.jpg, gt: "госсовета", pred: "госсовета", dist: 0
+275961.jpg, gt: "спр", pred: "ск", dist: 2
+275962.jpg, gt: "зарядка", pred: "зарядка", dist: 0
+275963.jpg, gt: "7624", pred: "047", dist: 4
+275964.jpg, gt: "AJ", pred: "2", dist: 2
+epoch 20, ctc: 1.440, levenshtein: 2.245
+best val loss: 1.388
