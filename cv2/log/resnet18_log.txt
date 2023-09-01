@@ -1,33 +1,3 @@
->>> calculate labeled data stats inplace
-labeled samples: 276000
-     img       text
-0  1.jpg     Атырау
-1  2.jpg      транз
-2  3.jpg      ходят
-3  4.jpg  ощущений,
-4  5.jpg         74
-drop 126 NaN samples
-labeled samples: 275874
-read files: 100%|██████████| 275874/275874 [08:07<00:00, 566.11it/s]
-     img       text  img_width  img_height  img_channels  img_ratio  text_len
-0  1.jpg     Атырау        303          77             3   3.935065         6
-1  2.jpg      транз        128          58             3   2.206897         5
-2  3.jpg      ходят         95          21             3   4.523810         5
-3  4.jpg  ощущений,        146          45             3   3.244444         9
-4  5.jpg         74         38          48             3   0.791667         2
->>> deleting samples with small images inplace
-drop 244 samples (thresh=5)
-labeled samples: 275630
->>> deleting samples with rare characters inplace
-unique symbols: 608
-first 30 symbols: [('о', 109470), ('а', 98383), ('е', 87551), ('и', 78191), ('н', 73121), ('т', 64832), ('с', 61069), ('р', 58994), ('л', 48676), ('к', 42546), ('в', 42451), ('м', 33725), ('д', 31624), ('1', 31574), (' ', 30726), ('0', 30257), ('п', 27251), ('у', 26746), ('я', 25201), ('.', 23446), ('ы', 21627), ('2', 21099), ('A', 20841), (',', 20221), ('E', 19821), ('г', 18660), ('з', 17925), ('ь', 17852), ('3', 17509), ('б', 17067)]
-deleted symbols (thresh=3): 357
-drop 220 samples (thresh=3)
-labeled samples: 275410
-
-
-
-
 # crnn1, resnet18, 20 epochs, seed 0, img_sz=320x64, cnn_output_len=30
 crnn_resnet18, current device: cuda
 alphabet: 233 symbols
